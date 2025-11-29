@@ -17,7 +17,10 @@ class MinecraftBot:
         self.allowed_users = Config.ALLOWED_USERS_IDS
         self.bases_file = "bases.json"
         self.users_file = "users.json"
-        
+        self.times = ['day','noon','night','midnight']
+        self.wheather = ['clear','rain','thunder']
+        self.modes = ['survival','creative']
+        self.difficulties = ['peaceful','easy', 'normal']
         # Загружаем данные
         self.bases = self._load_bases()
         self.users = self._load_users()
@@ -121,7 +124,44 @@ class MinecraftBot:
         await update.message.reply_text(
             f"➡️ Телепортация {user_nickname} на {base_info['name']}...\n"
         )
-    
+    async def game_mode_change(self, update: Update, context: ContextTypes.DEFAULT_TYPE, mode: str):
+        """Включаем креативный режим"""
+        if not self.is_user_allowed(update.effective_user.id):
+            await update.message.reply_text("Access Denied")
+            return
+        user_nickname = self.get_minecraft_nickname(update.effective_user.id)
+        response = await self.send_rcon_command(f"gamemode creative {user_nickname}")
+        await update.message.reply_text (
+            f"Включен {mode} режим для игрока {user_nickname}"
+        )
+
+    async def set_time (self, update: Update, context: ContextTypes.DEFAULT_TYPE, time: str):
+        """Setting Time Globally"""
+        if not self.is_user_allowed(update.effective_user.id):
+            await update.message.reply_text("Access Denied")
+            return
+        response = await self.send_rcon_command(f"time set {time}")
+        await update.message.reply_text(
+            f"Time set to {time}"
+        )
+    async def set_difficulty(self, update: Update, context: ContextTypes.DEFAULT_TYPE, difficulty: str):
+        """Set slozhnost"""
+        if not self.is_user_allowed(update.effective_user.id):
+            await update.message.reply_text("Access Denied")
+            return
+        response = await self.send_rcon_command(f"difficulty {difficulty}")
+        await update.message.reply_text (
+            f"Game Difficulty Set To {difficulty}"
+        )
+    async def set_weather (self, update: Update, context: ContextTypes.DEFAULT_TYPE, weather: str):
+        """Set weather globally"""
+        if not self.is_user_allowed(update.effective_user.id):
+            await update.message.reply_text("Access Denied")
+            return
+        response = await self.send_rcon_command(f"/weather {weather}")
+        await update.message.reply_text(
+            f"Weather set to {weather}"
+        )
     async def teleport_to_papa(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Телепортирует сына к папе"""
         if not self.is_user_allowed(update.effective_user.id):

@@ -3,20 +3,5 @@
     "name": "Домик",
     "coords": "-147 64 -57",
     "description": "Основной домик"
-  },
-  "desert": {
-    "name": "Пустыня",
-    "coords": "-753 64 -2450",
-    "description": "Пустынные жители"
-  },
-  "sunplace": {
-    "name": "Солнечный дом",
-    "coords": "-159 296 -46",
-    "description": "Пипец высоко"
-  },
-  "mushroom": {
-    "name": "Грибодомик",
-    "coords": "-58 84 -541",
-    "description": "Дом из гриба"
   }
 }
